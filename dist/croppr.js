@@ -856,12 +856,15 @@ var CropprCore = function () {
         var ratioMode = isVerticalMovement ? 'width' : 'height';
         box.constrainToRatio(ratio, origin, ratioMode);
       }
-      var min = this.options.minSize;
-      var max = this.options.maxSize;
-      box.constrainToSize(max.width, max.height, min.width, min.height, origin, this.options.aspectRatio);
       var parentWidth = this.cropperEl.offsetWidth;
       var parentHeight = this.cropperEl.offsetHeight;
       box.constrainToBoundary(parentWidth, parentHeight, origin);
+      var min = this.options.minSize;
+      var max = this.options.maxSize;
+      box.constrainToSize(max.width, max.height, min.width, min.height, origin, this.options.aspectRatio);
+      if (box.x1 < 0 || box.y1 < 0 || box.x2 > Math.ceil(container.width) || box.y2 > Math.ceil(container.height)) {
+        return;
+      }
       this.box = box;
       this.redraw();
       if (this.options.onCropMove !== null) {
